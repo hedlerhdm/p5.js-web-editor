@@ -25,6 +25,20 @@ import i18n from './i18n-test';
 import ThemeProvider from './modules/App/components/ThemeProvider';
 import configureStore from './store';
 import theme, { Theme } from './theme';
+import { initialTestState } from './testData/testReduxStore';
+
+// Configure i18next for tests
+i18n.init({
+  lng: 'en',
+  fallbackLng: 'en',
+  ns: ['translations'],
+  defaultNS: 'translations',
+  resources: {
+    en: {
+      translations: {}
+    }
+  }
+});
 
 export const history = createMemoryHistory();
 
@@ -94,27 +108,33 @@ Providers.propTypes = {
  */
 function reduxRender(
   ui,
-  { initialState, store = configureStore(initialState), ...renderOptions } = {}
+  {
+    initialState = initialTestState,
+    store = configureStore({
+      reducer: (state) => state,
+      preloadedState: initialState
+    }),
+    ...renderOptions
+  } = {}
 ) {
   function Wrapper({ children }) {
     return (
       <I18nextProvider i18n={i18n}>
         <Provider store={store}>
-          <ThemeProvider>
-            <ResponsiveProvider {...renderOptions}>
-              <Router history={history}>{children}</Router>
-            </ResponsiveProvider>
-          </ThemeProvider>
+          <ThemeProvider theme={{}}>{children}</ThemeProvider>
         </Provider>
       </I18nextProvider>
     );
   }
 
   Wrapper.propTypes = {
-    children: PropTypes.element.isRequired
+    children: PropTypes.node.isRequired
   };
 
-  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+  return {
+    store,
+    ...render(ui, { wrapper: Wrapper, ...renderOptions })
+  };
 }
 
 /**

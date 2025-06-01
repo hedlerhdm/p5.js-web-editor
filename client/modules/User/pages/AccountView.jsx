@@ -75,30 +75,59 @@ function AccountView() {
 
       <main className="account-settings">
         <header className="account-settings__header">
-          <h1 className="account-settings__title">
+          <h1
+            className="account-settings__title"
+            data-testid="account-settings-title"
+          >
             {t('AccountView.Settings')}
           </h1>
         </header>
         {accessTokensUIEnabled && (
-          <Tabs className="account__tabs">
-            <TabList>
+          <Tabs
+            className="account__tabs"
+            defaultIndex={0}
+            selectedTabClassName="tabs__tab--selected"
+          >
+            <TabList className="tabs__list">
               <div className="tabs__titles">
-                <Tab>
-                  <h4 className="tabs__title">{t('AccountView.AccountTab')}</h4>
+                <Tab
+                  className="tabs__tab"
+                  selectedClassName="tabs__tab--selected"
+                  role="tab"
+                  aria-selected="true"
+                  aria-controls="account-panel"
+                  aria-label="Account"
+                >
+                  <h4 className="tabs__title">
+                    {t('AccountView.AccountTab', 'Account')}
+                  </h4>
                 </Tab>
-                {accessTokensUIEnabled && (
-                  <Tab>
-                    <h4 className="tabs__title">
-                      {t('AccountView.AccessTokensTab')}
-                    </h4>
-                  </Tab>
-                )}
+                <Tab
+                  className="tabs__tab"
+                  selectedClassName="tabs__tab--selected"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="access-tokens-panel"
+                  aria-label="Access Tokens"
+                >
+                  <h4 className="tabs__title">
+                    {t('AccountView.AccessTokensTab', 'Access Tokens')}
+                  </h4>
+                </Tab>
               </div>
             </TabList>
-            <TabPanel>
+            <TabPanel
+              id="account-panel"
+              role="tabpanel"
+              className="tabs__panel"
+            >
               <SocialLoginPanel />
             </TabPanel>
-            <TabPanel>
+            <TabPanel
+              id="access-tokens-panel"
+              role="tabpanel"
+              className="tabs__panel"
+            >
               <APIKeyForm />
             </TabPanel>
           </Tabs>

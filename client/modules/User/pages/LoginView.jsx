@@ -14,7 +14,8 @@ function LoginView() {
       <Nav layout="dashboard" />
       <main className="form-container">
         <Helmet>
-          <title>{t('LoginView.Title')}</title>
+          <title data-testid="helmet-title">{t('LoginView.Title')}</title>
+          <meta name="current-title" content={t('LoginView.Title')} />
         </Helmet>
         <div className="form-container__content">
           <h2 className="form-container__title">{t('LoginView.Login')}</h2>

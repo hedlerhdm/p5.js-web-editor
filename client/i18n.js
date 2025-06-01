@@ -1,7 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
-
 import {
   be,
   enUS,
@@ -20,8 +19,9 @@ import {
   tr,
   enIN
 } from 'date-fns/locale';
+import translations from '../translations/locales/en-US/translations.json';
 
-const fallbackLng = ['en-US'];
+// Remove unused fallbackLng variable since it's hardcoded in i18n.init()
 
 export const availableLanguages = [
   'be',
@@ -104,19 +104,17 @@ i18n
   // .use(LanguageDetector)// to detect the language from currentBrowser
   .use(Backend) // to fetch the data from server
   .init({
-    lng: 'en-US',
-    fallbackLng, // if user computer language is not on the list of available languages, than we will be using the fallback language specified earlier
-    debug: false,
-    backend: options,
-    getAsync: false,
-    initImmediate: false,
-    useSuspense: true,
-    whitelist: availableLanguages,
-    interpolation: {
-      escapeValue: false // react already safes from xss
+    resources: {
+      'en-US': {
+        translation: translations
+      }
     },
-    saveMissing: false, // if a key is not found AND this flag is set to true, i18next will call the handler missingKeyHandler
-    missingKeyHandler: false // function(lng, ns, key, fallbackValue) { }  custom logic about how to handle the missing keys
+    lng: 'en-US',
+    fallbackLng: 'en-US',
+    interpolation: {
+      escapeValue: false
+    },
+    backend: options // Add options to Backend configuration
   });
 
 export default i18n;

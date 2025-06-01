@@ -1,21 +1,18 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import Collection from '../components/Collection';
 import Nav from '../../IDE/components/Header/Nav';
 import RootPage from '../../../components/RootPage';
-import Collection from '../components/Collection';
 
-const CollectionView = () => {
-  const params = useParams();
+function CollectionView() {
+  const { username, collection_id: collectionId } = useParams();
 
   return (
     <RootPage>
-      <Nav layout="dashboard" />
-      <Collection
-        collectionId={params.collection_id}
-        username={params.username}
-      />
+      <Nav />
+      <Collection username={username} collectionId={collectionId} />
     </RootPage>
   );
-};
+}
 
 export default CollectionView;

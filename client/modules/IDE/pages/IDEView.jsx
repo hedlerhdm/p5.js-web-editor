@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, Prompt, useParams } from 'react-router-dom';
+import { useLocation, Prompt, useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
@@ -10,7 +10,6 @@ import PreviewFrame from '../components/PreviewFrame';
 import Console from '../components/Console';
 import Toast from '../components/Toast';
 import { updateFileContent } from '../actions/files';
-
 import {
   autosaveProject,
   clearPersistedState,
@@ -97,6 +96,7 @@ const IDEView = () => {
   const project = useSelector((state) => state.project);
   const isUserOwner = useSelector(getIsUserOwner);
   const dispatch = useDispatch();
+
   const { t } = useTranslation();
 
   const params = useParams();
@@ -105,7 +105,7 @@ const IDEView = () => {
   const [sidebarSize, setSidebarSize] = useState(160);
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
   const [MaxSize, setMaxSize] = useState(window.innerWidth);
-
+  const history = useHistory();
   const cmRef = useRef({});
 
   const autosaveIntervalRef = useRef(null);

@@ -34,7 +34,7 @@ export default async function listCollections(req, res) {
       { path: 'owner', select: ['id', 'username'] },
       {
         path: 'items.project',
-        select: ['id', 'name', 'slug'],
+        select: ['id', 'name', 'slug', 'visibility'],
         populate: {
           path: 'user',
           select: ['username']

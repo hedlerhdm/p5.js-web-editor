@@ -8,7 +8,8 @@ const initialState = () => {
   return {
     name: generatedName,
     updatedAt: '',
-    isSaving: false
+    isSaving: false,
+    visibility: 'Public'
   };
 };
 
@@ -19,13 +20,16 @@ const project = (state, action) => {
   switch (action.type) {
     case ActionTypes.SET_PROJECT_NAME:
       return Object.assign({}, { ...state }, { name: action.name });
+    case ActionTypes.SET_PROJECT_VISIBILITY:
+      return Object.assign({}, { ...state }, { visibility: action.visibility });
     case ActionTypes.NEW_PROJECT:
       return {
         id: action.project.id,
         name: action.project.name,
         updatedAt: action.project.updatedAt,
         owner: action.owner,
-        isSaving: false
+        isSaving: false,
+        visibility: action.project.visibility
       };
     case ActionTypes.SET_PROJECT:
       return {
@@ -33,7 +37,8 @@ const project = (state, action) => {
         name: action.project.name,
         updatedAt: action.project.updatedAt,
         owner: action.owner,
-        isSaving: false
+        isSaving: false,
+        visibility: action.project.visibility
       };
     case ActionTypes.RESET_PROJECT:
       return initialState();

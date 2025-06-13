@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +15,7 @@ import {
   setGridOutput,
   setTextOutput
 } from '../../actions/preferences';
-
+import { changeVisibility } from '../../actions/project';
 import PlayIcon from '../../../../images/play.svg';
 import StopIcon from '../../../../images/stop.svg';
 import PreferencesIcon from '../../../../images/preferences.svg';
@@ -27,10 +27,27 @@ const Toolbar = (props) => {
     (state) => state.ide
   );
   const project = useSelector((state) => state.project);
+  const user = useSelector((state) => state.user);
   const autorefresh = useSelector((state) => state.preferences.autorefresh);
   const dispatch = useDispatch();
-
   const { t } = useTranslation();
+  const userIsOwner = user?.username === project.owner?.username;
+  const [isPrivate, setIsPrivate] = useState(project.visibility === 'Private');
+  useEffect(() => {
+    setIsPrivate(project.visibility === 'Private');
+  }, [project]);
+
+  const toggleVisibility = (e) => {
+    try {
+      const isChecked = e.target.checked;
+      const newVisibility = isChecked ? 'Private' : 'Public';
+      setIsPrivate(isChecked);
+      dispatch(changeVisibility(project.id, project.name, newVisibility));
+    } catch (error) {
+      console.log(error);
+      setIsPrivate(project.visibility === 'Private');
+    }
+  };
 
   const playButtonClass = classNames({
     'toolbar__play-button': true,
@@ -101,9 +118,22 @@ const Toolbar = (props) => {
       <div className="toolbar__project-name-container">
         <ProjectName />
         {(() => {
-          if (project.owner) {
+          if (project?.owner && userIsOwner) {
             return (
-              <p className="toolbar__project-project.owner">
+              <main className="toolbar__makeprivate">
+                <p>Private</p>
+                <input
+                  type="checkbox"
+                  className="toolbar__togglevisibility"
+                  checked={isPrivate}
+                  onChange={toggleVisibility}
+                />
+              </main>
+            );
+          }
+          if (project?.owner && !userIsOwner) {
+            return (
+              <p className="toolbar__project-owner">
                 {t('Toolbar.By')}{' '}
                 <Link to={`/${project.owner.username}/sketches`}>
                   {project.owner.username}
@@ -113,8 +143,8 @@ const Toolbar = (props) => {
           }
           return null;
         })()}
+        <VersionIndicator />
       </div>
-      <VersionIndicator />
       <div style={{ flex: 1 }} />
       <button
         className={preferencesButtonClass}

@@ -13,7 +13,8 @@ const Frame = styled.iframe`
 
 function PreviewFrame({ fullView, isOverlayVisible }) {
   const iframe = useRef();
-  const previewUrl = getConfig('PREVIEW_URL');
+  const previewUrl = getConfig('PREVIEW_SERVER_URL');
+  console.log(previewUrl);
   useEffect(() => {
     const unsubscribe = registerFrame(iframe.current.contentWindow, previewUrl);
     return () => {

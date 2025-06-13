@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 import session from 'express-session';
 import connectMongo from 'connect-mongo';
 import passport from 'passport';
@@ -66,6 +67,7 @@ const corsMiddleware = cors({
   credentials: true,
   origin: allowedCorsOrigins
 });
+
 app.use(corsMiddleware);
 // Enable pre-flight OPTIONS route for all end-points
 app.options('*', corsMiddleware);
@@ -86,6 +88,18 @@ const clientPromise = mongoose
   .then((m) => m.connection.getClient());
 
 app.use(
+  '/preview',
+  createProxyMiddleware({
+    target: process.env.PREVIEW_URL, // Preview server address
+    changeOrigin: true, // Changes the origin of the host header to the target URL
+    pathRewrite: {
+      '^/preview': '/' // Optionally rewrite the path
+    },
+    logLevel: 'debug' // Logs proxy activity for debugging
+  })
+);
+
+app.use(
   session({
     resave: true,
     saveUninitialized: false,
@@ -103,6 +117,12 @@ app.use(
     })
   })
 );
+
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  next();
+});
 
 app.use('/api/v1', requestsOfTypeJSON(), api);
 // This is a temporary way to test access via Personal Access Tokens
@@ -165,6 +185,8 @@ app.use('/', passportRoutes);
 require('./config/passport');
 
 app.get('/', (req, res) => {
+  //    res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  //    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
   res.sendFile(renderIndex());
 });
 

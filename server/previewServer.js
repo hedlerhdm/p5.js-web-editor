@@ -48,6 +48,7 @@ const allowedCorsOrigins = [
   process.env.PREVIEW_URL
 ];
 
+//
 // to allow client-only development
 if (process.env.CORS_ALLOW_LOCALHOST === 'true') {
   allowedCorsOrigins.push(/localhost/);
@@ -61,6 +62,12 @@ const corsMiddleware = cors({
 app.use(corsMiddleware);
 // Enable pre-flight OPTIONS route for all end-points
 app.options('*', corsMiddleware);
+
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  next();
+});
 
 // Run Webpack dev server in development mode
 if (process.env.NODE_ENV === 'development') {

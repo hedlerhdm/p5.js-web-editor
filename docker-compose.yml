@@ -12,7 +12,6 @@ services:
     # image: index.docker.io/catarak/p5.js-web-editor:latest
     # uncomment the following lines if you don't want export all of the variables
     # defined in your .env file for testing
-   
     environment:
        - MONGO_URL=mongodb://mongo:27017/p5js-web-editor
     volumes:

@@ -15,25 +15,25 @@ services:
     env_file:
       - stack.env
     environment:
-       - MONGO_URL=mongodb://mongo:27017/p5js-web-editor
-       - API_URL=${API_URL}
-       - GITHUB_ID=${GITHUB_ID}
-       - GITHUB_SECRET=${GITHUB_SECRET}
-       - CORS_ALLOW_LOCALHOST=${CORS_ALLOW_LOCALHOST}
-       - ML5_LIBRARY_USERNAME=${ML5_LIBRARY_USERNAME}
-       - ML5_LIBRARY_EMAIL=${ML5_LIBRARY_EMAIL}
-       - ML5_LIBRARY_PASS=${ML5_LIBRARY_PASS}
-       - PORT=${PORT}
-       - PREVIEW_PORT=${PREVIEW_PORT}
-       - EDITOR_URL=${EDITOR_URL}
-       - PREVIEW_URL=${PREVIEW_URL}
-       - EMAIL_ENABLED=${EMAIL_ENABLED}
-       - MAILGUN_API_KEY=${MAILGUN_API_KEY}
-       - MAILGUN_DOMAIN=${MAILGUN_DOMAIN}
-       - TRANSLATIONS_ENABLED=${TRANSLATIONS_ENABLED}
-       - UI_ACCESS_TOKEN_ENABLED=${UI_ACCESS_TOKEN_ENABLED}
-       - UPLOAD_LIMIT=${UPLOAD_LIMIT}
-       - SESSION_SECRET=dev_secret  # Not in stack.env, but required by express-session
+      - MONGO_URL=mongodb://mongo:27017/p5js-web-editor
+      - API_URL=${API_URL}
+      - GITHUB_ID=${GITHUB_ID}
+      - GITHUB_SECRET=${GITHUB_SECRET}
+      - CORS_ALLOW_LOCALHOST=${CORS_ALLOW_LOCALHOST}
+      - ML5_LIBRARY_USERNAME=${ML5_LIBRARY_USERNAME}
+      - ML5_LIBRARY_EMAIL=${ML5_LIBRARY_EMAIL}
+      - ML5_LIBRARY_PASS=${ML5_LIBRARY_PASS}
+      - PORT=${PORT}
+      - PREVIEW_PORT=${PREVIEW_PORT}
+      - EDITOR_URL=${EDITOR_URL}
+      - PREVIEW_URL=${PREVIEW_URL}
+      - EMAIL_ENABLED=${EMAIL_ENABLED}
+      - MAILGUN_API_KEY=${MAILGUN_API_KEY}
+      - MAILGUN_DOMAIN=${MAILGUN_DOMAIN}
+      - TRANSLATIONS_ENABLED=${TRANSLATIONS_ENABLED}
+      - UI_ACCESS_TOKEN_ENABLED=${UI_ACCESS_TOKEN_ENABLED}
+      - UPLOAD_LIMIT=${UPLOAD_LIMIT}
+      - SESSION_SECRET=dev_secret  # Not in stack.env, but required by express-session
     volumes:
       - .:/opt/node/app
       - /opt/node/app/node_modules

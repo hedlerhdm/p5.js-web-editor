@@ -1,20 +1,32 @@
 /**
- * Mail service wrapping around mailgun
+ * Mail service wrapping around mailgun or fallback
  */
 
 import nodemailer from 'nodemailer';
 import mg from 'nodemailer-mailgun-transport';
 
-const auth = {
-  api_key: process.env.MAILGUN_KEY,
-  domain: process.env.MAILGUN_DOMAIN
-};
-
 class Mail {
   constructor() {
-    this.client = nodemailer.createTransport(mg({ auth }));
+    const mailgunKey = process.env.MAILGUN_API_KEY || process.env.MAILGUN_KEY;
+    const mailgunDomain = process.env.MAILGUN_DOMAIN;
+    const emailEnabled = process.env.EMAIL_ENABLED !== 'false';
+
+    if (mailgunKey && mailgunDomain && emailEnabled) {
+      const auth = {
+        api_key: mailgunKey,
+        domain: mailgunDomain
+      };
+      console.log('[Mailer] Mailgun-Transport aktiv.');
+      this.client = nodemailer.createTransport(mg({ auth }));
+    } else {
+      console.warn('[Mailer] Dummy-Transport aktiv. Es werden keine E-Mails versendet.');
+      this.client = nodemailer.createTransport({
+        jsonTransport: true
+      });
+    }
+
     this.sendOptions = {
-      from: process.env.EMAIL_SENDER
+      from: process.env.EMAIL_SENDER || 'noreply@example.com'
     };
   }
 

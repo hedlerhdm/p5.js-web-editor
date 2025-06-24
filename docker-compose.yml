@@ -42,7 +42,6 @@ services:
       - '8002:8002'
     depends_on:
       - mongo
-    command: ["npm", "start"]
 volumes:
   dbdata:
 

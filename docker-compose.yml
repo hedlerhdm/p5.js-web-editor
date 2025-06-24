@@ -17,8 +17,8 @@ services:
     environment:
       - MONGO_URL=mongodb://mongo:27017/p5js-web-editor
       - API_URL=${API_URL}
-      - GITHUB_ID=${GITHUB_ID}
-      - GITHUB_SECRET=${GITHUB_SECRET}
+      - GITHUB_ID=dummy
+      - GITHUB_SECRET=dummy
       - CORS_ALLOW_LOCALHOST=${CORS_ALLOW_LOCALHOST}
       - ML5_LIBRARY_USERNAME=${ML5_LIBRARY_USERNAME}
       - ML5_LIBRARY_EMAIL=${ML5_LIBRARY_EMAIL}
@@ -42,7 +42,6 @@ services:
       - '8002:8002'
     depends_on:
       - mongo
-    command: ["env"]
 volumes:
   dbdata:
 

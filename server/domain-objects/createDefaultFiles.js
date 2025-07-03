@@ -1,4 +1,4 @@
-export const defaultSketch = `function setup() {
+export const defaultSketch = `function setup() { 
   createCanvas(400, 400);
 }
 
